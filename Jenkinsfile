@@ -2,7 +2,8 @@ pipeline {
     agent any
     
     tools {
-        maven 'Maven'  // Make sure this is configured in Jenkins Global Tool Configuration
+        jdk 'JDK25'     // Name exactly as configured in Jenkins
+        maven 'Maven3.9' // Name exactly as configured in Jenkins
     }
     
     stages {
@@ -25,27 +26,26 @@ pipeline {
         
         stage('Package') {
             steps {
-                bat 'mvn package -DskipTests'
+                bat 'mvn package'
             }
         }
         
         stage('Verify') {
             steps {
                 bat 'java -jar target/basic-java-app-1.0-SNAPSHOT.jar'
-                echo 'Application executed successfully!'
             }
         }
     }
     
     post {
         always {
-            archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: false
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
         }
         success {
-            echo 'Pipeline completed successfully! Check archived JAR file.'
+            echo '🎉 Pipeline SUCCESS! Download JAR from Artifacts.'
         }
         failure {
-            echo 'Pipeline failed. Check logs above.'
+            echo '❌ Pipeline FAILED. Check Maven/Java logs.'
         }
     }
 }
