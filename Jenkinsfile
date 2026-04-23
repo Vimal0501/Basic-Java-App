@@ -2,8 +2,8 @@ pipeline {
     agent any
     
     tools {
-        jdk 'JDK25'     // Name exactly as configured in Jenkins
-        maven 'Maven3.9' // Name exactly as configured in Jenkins
+        jdk 'JDK_25'     // ← Exact name from your error
+        maven 'Maven'    // ← Exact name from your error
     }
     
     stages {
@@ -42,10 +42,10 @@ pipeline {
             archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
         }
         success {
-            echo '🎉 Pipeline SUCCESS! Download JAR from Artifacts.'
+            echo '🎉 SUCCESS! JAR ready for download.'
         }
         failure {
-            echo '❌ Pipeline FAILED. Check Maven/Java logs.'
+            echo '❌ FAILED. Check Java/Maven paths.'
         }
     }
 }
